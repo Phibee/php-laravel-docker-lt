@@ -791,7 +791,7 @@
                                     <div class="text-bold">AED {{ number_format($productItem['landDepartmentFee']['amount'],2) }}</div>
 
                                     @if($isFeeFinancing && $productItem['landDepartmentFee']['value'] > 0)
-                                        <div>(Out of {{ $productItem['landDepartmentFee']['value'] }})</div>
+                                        <div>(Out of {{ number_format($productItem['landDepartmentFee']['value'], 2) }})</div>
                                     @endif
                                 </td>
                             @endforeach
@@ -913,7 +913,7 @@
                                     <div class="text-bold">AED {{ number_format($productItem['realEstateFee']['amount'], 2) }}</div>
                                     
                                     @if($isFeeFinancing && $productItem['realEstateFee']['value'] > 0)
-                                        <div>(Out of {{ $productItem['realEstateFee']['value'] }})</div>
+                                        <div>(Out of {{ number_format($productItem['realEstateFee']['value'], 2) }})</div>
                                     @endif
                                 </td>
                             @endforeach
