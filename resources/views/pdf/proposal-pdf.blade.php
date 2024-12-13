@@ -341,7 +341,26 @@
     .table td.w_30 {  
         width: 30% !important;
     }
-    
+
+    .reset-styles * {
+        all: unset !important;
+    }
+
+    .reset-styles ul {
+        padding-left: 14px;
+    }
+
+    .reset-styles ul li {
+        list-style-type: disc !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .reset-styles ol li {
+        list-style-type: decimal !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
 
     </style>
 </head>
@@ -405,20 +424,15 @@
                                         <span>{{ number_format($productItem['fixedInterestRate'], 2) }}</span>
                                     @endif
                                 </li>
-                                <li class="bank-icon">{{ $productItem['bankProcessingFeePercentage'] }}%</li>
-                                <li class="calendar-icon">AED {{ number_format($productItem['monthlyPayment'], 2) }}</li>
+                                <li class="bank-icon"> {{ $productItem['bankProcessingFeePercentage'] }}%</li>
+                                <li class="calendar-icon"> AED {{ number_format($productItem['monthlyPayment'], 2) }}</li>
+                                <li class="bank-icon">{{ $productItem['productId'] }}</li>
                             </ul>
                             <table class="default w-full">
                                 <tr>
                                     <td class="px-1">
                                         <div>Loan Amount</div>
                                         <div class="text-bold">AED {{ number_format($amountTotals['loanAmount'], 2) }}</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-1">
-                                        <div class="">Product ID</div>
-                                        <div class="text-bold ">{{ $productItem['productId'] }}</div>
                                     </td>
                                 </tr>
                             </table>
@@ -430,7 +444,7 @@
 
         <div class="mb-6">
             <div class="bg-slate-900 w-48 px-4 py-1 top-[-0.8rem] transform text-[0.7rem] text-white rounded-t-md">
-                Personal and Mortgage Details:
+                Personal and Mortgage Details
             </div>
             <table class="table">
                     <tr>
@@ -468,7 +482,7 @@
 
         <div>
             <div class="bg-slate-900 w-48 px-4 py-1 top-[-0.8rem] transform text-[0.7rem] text-white rounded-t-md">
-                Property and Loan Information:
+                Property and Loan Information
             </div>
             <table class="table">
                     <tr>
@@ -559,7 +573,7 @@
                         <td class="border border-slate-400 px-4 py-1 rounded-lg" valign="middle">Monthly Mortgage Payment</td>
                         @foreach ($bankProducts as $product => $productItem)
                             <td class="border border-slate-400 px-1 py-1" style="background-color: {{ $productItem['color'] }};">
-                                <div>AED {{ number_format($productItem['monthlyPayment'], 2) }}</div>
+                                <div class="text-bold">AED {{ number_format($productItem['monthlyPayment'], 2) }}</div>
                             </td>
                         @endforeach
                     </tr>
@@ -568,9 +582,9 @@
                         @foreach ($bankProducts as $product => $productItem)
                             <td class="border border-slate-400 px-1 py-1" style="background-color: {{ $productItem['color'] }};">
                                 @if($productItem['rateType'] === "fixed")
-                                    <div>{{ $productItem['fixedInterestRate'] }} year (fixed)</div>
+                                    <div class="text-bold">{{ $productItem['fixedInterestRate'] }} year (fixed)</div>
                                 @else
-                                    <div>{{ $productItem['variableInterestRate'] }}</div>
+                                    <div class="text-bold">{{ $productItem['variableInterestRate'] }}</div>
                                 @endif
 
                                 @if($productItem['rateType'] === "fixed")
@@ -585,7 +599,7 @@
                         <td class="border border-slate-400 px-4 py-1 rounded-lg" valign="middle">Follow On Rate</td>
                         @foreach ($bankProducts as $product => $productItem)
                             <td class="border border-slate-400 px-1 py-1" style="background-color: {{ $productItem['color'] }};">
-                                <div>{{ $productItem['followUpInterestRate'] }}%</div>
+                                <div class="text-bold">{{ $productItem['variableInterestRate'] }}%</div>
                                 <div>+{{ $productItem['eiborRateMonths'] }} months EIBOR</div>
                             </td>
                         @endforeach
@@ -594,7 +608,7 @@
                         <td class="border border-slate-400 px-4 py-1 rounded-lg" valign="middle">Minimum Floor Rate</td>
                         @foreach ($bankProducts as $product => $productItem)
                             <td class="border border-slate-400 px-1 py-1" style="background-color: {{ $productItem['color'] }};">
-                                <div>{{ number_format($productItem['floor'], 2) }}%</div>
+                                <div class="text-bold">{{ number_format($productItem['floor'], 2) }}%</div>
                             </td>
                         @endforeach
                     </tr>
@@ -602,7 +616,7 @@
                         <td class="border border-slate-400 px-4 py-1 rounded-lg" valign="middle">Property Insurance</td>
                         @foreach ($bankProducts as $product => $productItem)
                             <td class="border border-slate-400 px-1 py-1" style="background-color: {{ $productItem['color'] }};">
-                                <div>{{ number_format($productItem['propertyInsuranceVal'], 2) }}%</div>
+                                <div class="text-bold">{{ number_format($productItem['propertyInsuranceVal'], 2) }}%</div>
                                 <div>({{ number_format($productItem['propertyInsurance'], 4) }}% per of the property value to be paid )</div>
                             </td>
                         @endforeach
@@ -611,7 +625,7 @@
                         <td class="border border-slate-400 px-4 py-1 rounded-lg" valign="middle">Life Insurance</td>
                         @foreach ($bankProducts as $product => $productItem)
                             <td class="border border-slate-400 px-1 py-1" style="background-color: {{ $productItem['color'] }};">
-                                <div>{{ number_format($productItem['lifeInsuranceVal'], 2) }}%</div>
+                                <div class="text-bold">{{ number_format($productItem['lifeInsuranceVal'], 2) }}%</div>
                                 <div>({{ number_format($productItem['lifeInsurance'], 4) }}% on outstanding loan amount)</div>
                             </td>
                         @endforeach
@@ -664,7 +678,7 @@
                         <td class="border border-slate-400 px-4 py-1 rounded-lg" valign="middle">Property Valuation Fee (Fixed)</td>
                         @foreach ($bankProducts as $product => $productItem)
                             <td class="border border-slate-400 px-1 py-1" style="background-color: {{ $productItem['color'] }};">
-                                <div>AED {{ number_format($productItem['propertyValuationFee'], 2) }}</div>
+                                <div class="text-bold">AED {{ number_format($productItem['propertyValuationFee'], 2) }}</div>
                             </td>
                         @endforeach
                     </tr>  
@@ -957,7 +971,7 @@
                             </div></td>
                             <td class="table_cell_full"></td>
                         </table>
-                        <div>
+                        <div class="reset-styles">
                             {!! $requiredDocs !!}
                         </div>
                     </div>
@@ -971,7 +985,7 @@
                         </div></td>
                         <td class="table_cell_full"></td>
                     </table>
-                    <div>
+                    <div class="reset-styles">
                         {!! $supportDocs !!}
                     </div>
                 </div>
