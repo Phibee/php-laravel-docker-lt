@@ -400,6 +400,7 @@
             <div><strong>Prepared for:</strong> {{ $client }}</div>
             <div><strong>Prepared by:</strong> {{ $currentUser['name'] }}</div>
             <div><strong>Date:</strong> {{ date('Y/m/d') }}</div>
+            <div><strong>Proposal Id:</strong> {{ $proposalId }}</div>
         </div>
 
         <div>
