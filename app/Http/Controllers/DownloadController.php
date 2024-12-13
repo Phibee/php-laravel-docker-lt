@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Http;
 
 class DownloadController extends Controller
 {
+    
     public function mortgagePdf(Request $request)
     {
         $data = $request->all();
@@ -33,4 +36,14 @@ class DownloadController extends Controller
 
         return $pdf->download('DBR-Calculation-by-TheLendingTree.pdf');  
     }
+
+    public function proposalPdf(Request $request) 
+    {   
+        $data = $request->all();
+
+        $pdf = PDF::loadView('pdf.proposal-pdf', $data);
+
+        return $pdf->download('Client-Proposal.pdf');
+    }
+
 }

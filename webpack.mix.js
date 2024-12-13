@@ -1,4 +1,4 @@
-const mix = require("laravel-mix");
+// const mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -11,6 +11,35 @@ const mix = require("laravel-mix");
  |
  */
 
-mix.js("resources/js/app.js", "public/js")
-    .sass("resources/sass/app.scss", "public/css")
-    .postCss("resources/css/paper.css", "public/css", [require("tailwindcss")]);
+// mix
+//   .js("resources/js/app.js", "public/js")
+//   //   .sass("resources/sass/app.scss", "public/css")
+//   .postCss("resources/css/app.css", "public/css", [require("tailwindcss")]);
+
+// mix
+//   .js("resources/js/app.js", "js")
+//   .postCss("resources/css/app.css", "css")
+//   .setPublicPath("dist");
+
+const mix = require("laravel-mix");
+
+mix.webpackConfig({
+  optimization: {
+    chunkIds: "named",
+  },
+});
+
+mix
+  .js("resources/js/app.js", "public/js")
+  .react()
+  .extract(["react"])
+  .postCss("resources/css/app.css", "public/css", [
+    require("postcss-import"),
+    require("tailwindcss"),
+  ]);
+// .setPublicPath("dist");
+// .webpackConfig(require("./webpack.config"));
+
+if (mix.inProduction()) {
+  mix.version();
+}

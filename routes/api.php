@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\DownloadController;
-
+use App\Http\Controllers\ImageController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,11 +18,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::apiResource('download', DownloadController::class);
-// Route::get('/download', [DownloadController::class, 'show']);
-// Route::get('/update', [DownloadController::class, 'update']);
-// Route::post('/proposal', [DownloadController::class, 'clientProposalPdf']);
-
 Route::post('/download/mortgage', [DownloadController::class, 'mortgagePdf']);
 Route::post('/download/buyout', [DownloadController::class, 'buyoutPdf']);
 Route::post('/download/dbr', [DownloadController::class, 'dbrPdf']);
+Route::post('/download/proposal', [DownloadController::class, 'proposalPdf']);
+// Route::get('/download/proposal', [DownloadController::class, 'viewpdf']);
+// Route::get('/download/proposal', function () {
+//     return view('pdf/pdf-sample');
+// });
+
+Route::get('/image/qrcode-vcard', [ImageController::class, 'generateVCard']);
