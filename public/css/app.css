@@ -449,6 +449,9 @@ video {
 .mb-0 {
   margin-bottom: 0px;
 }
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
 .mb-10 {
   margin-bottom: 2.5rem;
 }
@@ -478,9 +481,6 @@ video {
 }
 .mt-6 {
   margin-top: 1.5rem;
-}
-.block {
-  display: block;
 }
 .flex {
   display: flex;
@@ -602,6 +602,10 @@ video {
 }
 .uppercase {
   text-transform: uppercase;
+}
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
 }
 .text-violet-600 {
   --tw-text-opacity: 1;

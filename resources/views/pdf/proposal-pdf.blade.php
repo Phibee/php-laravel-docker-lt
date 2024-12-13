@@ -12,7 +12,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
-            html,body{
+
+        * {
+            font-family: "Poppins", sans-serif !important;
+        }
+
+        html,body{
             margin: 100px 10px 100px;
             padding: 0;
         }
@@ -362,6 +367,14 @@
         padding: 0 !important;
     }
 
+    .small-text{
+        font-size: 0.8em !important;
+    }
+
+    table.collapsed {
+        border-collapse: collapse;
+    }
+
     </style>
 </head>
 <body>
@@ -417,18 +430,29 @@
                         <td class="border border-slate-400 p-4 rounded-lg">
                             <h1 class="title">{{ $product }}</h1>
                             <ul class="reset-style mb-2">
-                                <li class="calculator-icon">
+                                <li class="text-slate-400 small-text">{{ $productItem['productId'] }}</li>
+                                <li>
+                                    <span>Interest Rate:</span>
                                     @if($productItem['rateType'] === "Variable")
-                                        <span>{{ number_format($productItem['variableInterestRate'], 2) }}</span>
+                                        <span class="text-bold">{{ number_format($productItem['variableInterestRate'], 2) }}</span>
                                     @else 
-                                        <span>{{ number_format($productItem['fixedInterestRate'], 2) }}</span>
+                                        <span class="text-bold">{{ number_format($productItem['fixedInterestRate'], 2) }}</span>
+                                    @endif
+                                    @if(empty($productItem['fixedYears']) && $productItem['rateType'] === "Variable")
+                                        <span class="text-slate-400 small-text">variable</span>
+                                    @else 
+                                        <span class="text-slate-400 small-text">{{ $productItem['fixedYears'] }} year</span>
                                     @endif
                                 </li>
-                                <li class="bank-icon"> {{ $productItem['bankProcessingFeePercentage'] }}%</li>
-                                <li class="calendar-icon"> AED {{ number_format($productItem['monthlyPayment'], 2) }}</li>
-                                <li class="bank-icon">{{ $productItem['productId'] }}</li>
+                                <li><span>Bank Fee: </span><span class="text-bold">{{ $productItem['bankProcessingFeePercentage'] }}%</span></li>
                             </ul>
                             <table class="default w-full">
+                                <tr>
+                                    <td class="px-1">
+                                        <div>Monthly Payment</div>
+                                        <div class="text-bold">AED {{ number_format($productItem['monthlyPayment'], 2) }}</div>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td class="px-1">
                                         <div>Loan Amount</div>
@@ -487,23 +511,30 @@
             <table class="table">
                     <tr>
                         <td class="border border-slate-400 py-2 px-1 rounded-lg table-cell" valign="top">
-                            <div class="mb-5">
+                            <div class="mb-1">
                                 <strong>Property Value</strong>
                                 <div>AED {{ number_format($propertyValue, 2) }}</div>
                             </div>
-                            <div>
+                            <div class="mb-1">
                                 <strong>Down Payment</strong>
                                 <div>AED {{ number_format($downPayment, 2) }}</div>
                             </div>
-                        </td>
-                        @if($transactionType === "BuyOut + Equity")
-                            <td class="border border-slate-400 py-2 px-1 rounded-lg table-cell" valign="top">
-                                <div class="mb-5">
+
+                            @if($transactionType === "BuyOut + Equity" || $transactionType === "Handover + Equity")
+                                <div class="mb-1">
                                     <strong>Equity Release Amount</strong>
                                     <div>AED {{ number_format($equityReleaseAmount, 2) }}</div>
                                 </div>
-                            </td>
-                        @endif
+
+                                @if($transactionType === "BuyOut + Equity")
+                                <div>
+                                    <strong>Outstanding Amount</strong>
+                                    <div>AED {{ number_format($outstandingLoanAmount, 2) }}</div>
+                                </div>
+                                @endif
+                            @endif
+                   
+                        </td>
                         <td class="border border-slate-400 py-2 px-1 rounded-lg table-cell w_20" valign="top">
                             <div class="mb-5">
                                 <strong>Loan to Value<br/>(LTV)</strong>
@@ -514,17 +545,17 @@
                                 <div>{{ $isFeeFinancing ? 'Yes' : 'No' }}</div>
                             </div>
                         </td>
-                        <td class="border border-slate-400 py-2 px-1 rounded-lg table-cell w_30" valign="top">
+                        <td class="border border-slate-400 py-2 px-1 rounded-lg table-cell" valign="top">
                             <table class="table w-full">
                                 <tr>
                                     <td>
-                                        <div class="text-bold">Original loan amount</div>
+                                        <div class="text-bold">Original Loan Amount</div>
                                         <div>AED {{ number_format($amountTotals['loanAmount'], 2) }}</div>
                                     </td>
                                 </tr>
                                 <tr class="text-violet-600">
                                     <td>
-                                        <div class="text-bold">Fee financing charge</div>
+                                        <div class="text-bold">Fee Financing Charge</div>
                                         <div>AED {{ number_format($amountTotals['feeFinanceCharge'], 2) }}</div>
                                     </td>
                                 </tr>
@@ -596,6 +627,14 @@
                         @endforeach
                     </tr>
                     <tr>
+                        <td class="border border-slate-400 px-4 py-1 rounded-lg" valign="middle">Mortgage Type</td>
+                        @foreach ($bankProducts as $product => $productItem)
+                            <td class="border border-slate-400 px-1 py-1" style="background-color: {{ $productItem['color'] }};">
+                                <div>{{ $productItem['typeOfFinance'] }}</div>
+                            </td>
+                        @endforeach
+                    </tr>
+                    <tr>
                         <td class="border border-slate-400 px-4 py-1 rounded-lg" valign="middle">Follow On Rate</td>
                         @foreach ($bankProducts as $product => $productItem)
                             <td class="border border-slate-400 px-1 py-1" style="background-color: {{ $productItem['color'] }};">
@@ -616,7 +655,7 @@
                         <td class="border border-slate-400 px-4 py-1 rounded-lg" valign="middle">Property Insurance</td>
                         @foreach ($bankProducts as $product => $productItem)
                             <td class="border border-slate-400 px-1 py-1" style="background-color: {{ $productItem['color'] }};">
-                                <div class="text-bold">{{ number_format($productItem['propertyInsuranceVal'], 2) }}%</div>
+                                <div class="text-bold">AED {{ number_format($productItem['propertyInsuranceVal'], 2) }}</div>
                                 <div>({{ number_format($productItem['propertyInsurance'], 4) }}% per of the property value to be paid )</div>
                             </td>
                         @endforeach
@@ -625,7 +664,7 @@
                         <td class="border border-slate-400 px-4 py-1 rounded-lg" valign="middle">Life Insurance</td>
                         @foreach ($bankProducts as $product => $productItem)
                             <td class="border border-slate-400 px-1 py-1" style="background-color: {{ $productItem['color'] }};">
-                                <div class="text-bold">{{ number_format($productItem['lifeInsuranceVal'], 2) }}%</div>
+                                <div class="text-bold">AED {{ number_format($productItem['lifeInsuranceVal'], 2) }}</div>
                                 <div>({{ number_format($productItem['lifeInsurance'], 4) }}% on outstanding loan amount)</div>
                             </td>
                         @endforeach
@@ -634,7 +673,7 @@
                         <td class="border border-slate-400 px-4 py-1 rounded-lg" valign="middle">Over Payment</td>
                         @foreach ($bankProducts as $product => $productItem)
                             <td class="border border-slate-400 px-1 py-1" style="background-color: {{ $productItem['color'] }};">
-                                <div>{{ $productItem['overPayment'] }}%</div>
+                                <div>{{ $productItem['overPayment'] }}</div>
                             </td>
                         @endforeach
                     </tr>
@@ -935,23 +974,23 @@
         </div>
 
 
-        <table class="table mt-6 border border-slate-400">
+        <table class="table collapsed mt-6 border border-slate-400">
                 <tr>
-                    <td class="py-1 px-1 rounded-lg text-center text-bold" valign="top">Total Fees Upfront</td>
+                    <td class="py-1 px-1 rounded-lg text-center text-bold border border-slate-400" valign="top">Total Fees Upfront</td>
                     @foreach ($bankProducts as $product => $productItem)
-                        <td class="py-1 px-1 rounded-lg text-left" valign="top">AED {{ number_format($productItem['totalFeeUpfront'],2) }}</td>    
+                        <td class="py-1 px-1 rounded-lg text-left border border-slate-400" valign="top">AED {{ number_format($productItem['totalFeeUpfront'],2) }}</td>    
                     @endforeach
                 </tr>
                 <tr>
-                    <td class="py-1 px-1 rounded-lg text-center text-bold" valign="top">Down Payment</td>
+                    <td class="py-1 px-1 rounded-lg text-center text-bold border border-slate-400" valign="top">Down Payment</td>
                     @foreach ($bankProducts as $product => $productItem)
-                        <td class="py-1 px-1 rounded-lg text-left" valign="top">AED {{ number_format($downPayment,2) }}</td>    
+                        <td class="py-1 px-1 rounded-lg text-left border border-slate-400" valign="top">AED {{ number_format($downPayment,2) }}</td>    
                     @endforeach
                 </tr>
                 <tr class="border-t">
-                    <td class="py-1 px-1 rounded-lg text-center text-bold" valign="top">Total Required Upfront</td>
+                    <td class="py-1 px-1 rounded-lg text-center text-bold border border-slate-400" valign="top">Total Required Upfront</td>
                     @foreach ($bankProducts as $product => $productItem) 
-                        <td class="py-1 px-1 rounded-lg text-left" valign="top">AED {{ number_format($productItem['totalRequiredUpfront'],2) }}</td>    
+                        <td class="py-1 px-1 rounded-lg text-left border border-slate-400" valign="top">AED {{ number_format($productItem['totalRequiredUpfront'],2) }}</td>    
                     @endforeach
                 </tr>
         </table>
