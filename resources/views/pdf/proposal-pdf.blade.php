@@ -790,7 +790,7 @@
                                 <td class="border border-slate-400 px-4 py-1" style="background-color: {{ $productItem['color'] }};">
                                     <div class="text-bold">AED {{ number_format($productItem['landDepartmentFee']['amount'],2) }}</div>
 
-                                    @if($isFeeFinancing)
+                                    @if($isFeeFinancing && $productItem['landDepartmentFee']['value'] > 0)
                                         <div>(Out of {{ $productItem['landDepartmentFee']['value'] }})</div>
                                     @endif
                                 </td>
@@ -826,11 +826,14 @@
                             <td class="border border-slate-400 px-4 py-1 rounded-lg text-center" valign="middle">
                                 <div>Mortgage Release Fee</div>
                                 <div>
-                                    @if(!empty($fees['mortgageReleaseFee']['amount']))
+                                    @if($fees['mortgageReleaseFee']['amount'] !== 0)
                                         <span>({{ $fees['mortgageReleaseFee']['amount'] }}% of Purchase Price)</span>
                                     @endif
-                                    @if(!empty($fees['mortgageReleaseFee']['additionalCharges']))
+                                    @if($fees['mortgageReleaseFee']['amount'] > 0 && $fees['mortgageReleaseFee']['additionalCharges'] !== 0)
                                         <span>+ AED {{ $fees['mortgageReleaseFee']['additionalCharges'] }}</span>
+                                    @endif
+                                    @if($fees['mortgageReleaseFee']['amount'] === 0 && $fees['mortgageReleaseFee']['additionalCharges'] >= 0)
+                                        <span>(Fixed)</span>
                                     @endif
                                 </div>
                             </td>
@@ -908,6 +911,10 @@
                             @foreach ($bankProducts as $product => $productItem)
                                 <td class="border border-slate-400 px-4 py-1" style="background-color: {{ $productItem['color'] }};">
                                     <div class="text-bold">AED {{ number_format($productItem['realEstateFee']['amount'], 2) }}</div>
+                                    
+                                    @if($isFeeFinancing && $productItem['realEstateFee']['value'] > 0)
+                                        <div>(Out of {{ $productItem['realEstateFee']['value'] }})</div>
+                                    @endif
                                 </td>
                             @endforeach
                         </tr> 
